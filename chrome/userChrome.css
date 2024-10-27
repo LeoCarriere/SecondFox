@@ -1,0 +1,241 @@
+#main-window[sizemode="normal"] #TabsToolbar-customization-target> :not(#alltabs-button) {
+    margin-top: 0 !important;
+}
+
+#tabbrowser-tabs {
+    border-inline-start: none !important;
+    margin-inline-start: 0px !important;
+}
+
+#TabsToolbar #firefox-view-button[open]>.toolbarbutton-icon,
+#tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
+    box-shadow: none !important;
+}
+
+.tab-background {
+    margin-block: 0 !important;
+}
+
+#nav-bar {
+    position: relative;
+    border-top: 0 !important;
+}
+
+.toolbar-items {
+    /* If you want catch the window when dragging and not a tab from the very top of the screen, leave 1px here */
+    /* margin-top: 1px !important; */ 
+    margin-top: 0px !important;
+}
+
+.tabbrowser-tab:is([visuallyselected], [multiselected]) {
+    color: var(--tab-selected-textcolor);
+    color-scheme: var(--tab-selected-color-scheme);
+}
+
+/*
+  MARK: Background and corners
+*/
+/* #region */
+
+.tab-background {
+    border-radius: var(--tab-border-radius);
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    margin-block: 0 !important;
+    border: 0 !important;
+    position: relative !important;
+    --uc-tab-corner-bg: transparent;
+    --uc-tab-corner-outline: transparent;
+
+    /* Both rounded bottom corners. */
+    &::before,
+    &::after {
+        content: "" !important;
+        position: absolute !important;
+        width: var(--tab-border-radius) !important;
+        aspect-ratio: 1 / 1;
+        bottom: 0 !important;
+        pointer-events: none !important;
+        clip-path: inset(0);
+    }
+
+    /* Bottom left corner. */
+    &::before {
+        border-bottom-right-radius: var(--tab-border-radius) !important;
+        left: 1px !important;
+        translate: calc(-1 * var(--tab-border-radius)) 0 !important;
+        box-shadow:
+            /* First shadow is a 1px outline for better theming support. */
+            -1px -1px var(--uc-tab-corner-outline) inset,
+            /* Second shadow is to add the background colour to the corner. */
+            0 0 0 var(--tab-border-radius) var(--uc-tab-corner-bg) !important;
+    }
+
+    /* Bottom right corner. */
+    &::after {
+        border-bottom-left-radius: var(--tab-border-radius) !important;
+        right: 1px !important;
+        translate: var(--tab-border-radius) 0 !important;
+        box-shadow:
+            /* First shadow is a 1px outline for better theming support. */
+            1px -1px var(--uc-tab-corner-outline) inset,
+            /* Second shadow is to add the background colour to the corner. */
+            0 0 0 var(--tab-border-radius) var(--uc-tab-corner-bg) !important;
+    }
+
+    /* Make sure that the bottom corners have the same background colour. */
+    &:is([selected], [multiselected]) {
+        --uc-tab-corner-bg: var(--tab-selected-bgcolor, var(--lwt-selected-tab-background-color, var(--toolbar-bgcolor)));
+        --uc-tab-corner-outline: var(--lwt-tab-line-color, transparent);
+        /* Disable tab outlines when selected. */
+        outline: none !important;
+    }
+
+    /* Tab hover background colour. */
+    .tabbrowser-tab:hover &:not([selected], [multiselected]) {
+        background-color: color-mix(in srgb, currentColor 8%, transparent) !important;
+        --uc-tab-corner-bg: color-mix(in srgb, currentColor 8%, transparent) !important;
+
+        /* When in light mode, the hover colour should be white. */
+        #TabsToolbar:not([brighttext]) & {
+            background-color: rgb(255 255 255 / .3) !important;
+            --uc-tab-corner-bg: rgb(255 255 255 / .3) !important;
+
+            @media (-moz-bool-pref: "uc.tweak.floating-tabs") {
+                background-color: var(--toolbar-bgcolor) !important;
+                --uc-tab-corner-bg: var(--toolbar-bgcolor) !important;
+            }
+        }
+    }
+
+    /* When tabs are selected but not active, they should have a partially
+     * transparent background. */
+    #tabbrowser-tabs &[multiselected]:not([selected]) {
+        box-shadow: none !important;
+        opacity: 0.7 !important;
+    }
+}
+
+  /* 
+   * I chose to disable the following tip as it hides some unwanted rounded corner
+   * and  In my case the tabs are serparated by enough space already.
+   *
+   * Disable bottom left rounded corner to prevent overlapping transparent tabs.
+   *
+   * If a tab is selected, then the next tab's bottom-left corner should be
+   * inverted to prevent overlap with the transparent backgrounds.
+   *
+   * If the next tab is hidden, then find the next visible tab which would be
+   * positioned next to the active tab.
+   */
+/* .tabbrowser-tab:is([selected], [multiselected]):not([hidden]) {
+    &+.tabbrowser-tab .tab-background:not([selected]),
+    &+.tabbrowser-tab[hidden]~.tabbrowser-tab:not([hidden]):is([hidden] + *) .tab-background:not([selected]) {
+        border-bottom-left-radius: var(--tab-border-radius) !important;
+
+        &::before {
+            --uc-tab-corner-bg: transparent !important;
+        }
+    }
+} */
+
+.browser-toolbar {
+    box-shadow: var( --secondfox-sharp-box-shadow ) !important;
+}
+
+
+body{
+    background: white !important;
+}
+
+/* Fade into content test : */
+/*
+#browser::after {
+    content:"" !important;
+    height: 100px !important;
+    top:64px !important;
+    width: 100%!important;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.8) !important;
+    position: absolute;
+    filter: invert(1) !important;
+
+    mix-blend-mode: multiply;
+} 
+*/
+
+#navigator-toolbox {
+    border-bottom: none !important;
+    background: var(--secondfox-gradient) !important;
+}
+
+.tab-stack {
+    margin: 12px 6px 0px 6px !important;
+}
+
+#TabsToolbar #firefox-view-button[open]>.toolbarbutton-icon,
+#tabbrowser-tabs:not([noshadowfortests]) .tab-background:is([selected], [multiselected]) {
+    box-shadow: var( --secondfox-sharp-box-shadow ) !important;
+}
+
+#tabbrowser-tabs {
+    --tab-min-width: 128px !important;
+}
+
+#urlbar[open] > #urlbar-background {
+    background: white !important;
+}
+
+#urlbar:not([open])[focused=""] > #urlbar-background , #urlbar:not([open])[focused="true"] > #urlbar-background{
+    box-shadow: none !important;
+}
+
+#appMenu-popup {
+    margin: 32px !important;
+}
+
+#appMenu-popup , 
+#urlbar[open] > #urlbar-background {
+    box-shadow: var( --secondfox-panel-box-shadow ) !important;
+}
+
+
+#urlbar, #searchbar {
+    color: light-dark(rgba(128, 128, 128, 0.7), rgba(128, 128, 128, 0.7) ) !important;
+}
+
+#tracking-protection-icon-container, #identity-box, #star-button-box, .toolbarbutton-icon{
+    opacity: 0.5 !important;
+    filter: saturate(50%) !important;
+}
+
+#urlbar-background, #searchbar {
+    background: transparent !important;
+}
+
+.toolbarbutton-animatable-box, .toolbarbutton-1 {
+    fill: light-dark(rgba(64, 64, 64, 0.5), rgba(196, 196, 196, 0.5)) !important;
+}
+
+#appcontent[devtoolstheme="light"] {
+  --rdm-browser-container-background: white !important;
+}
+
+menupopup, panel {
+    --panel-border-radius: 16px !important;
+}
+
+:root {
+    --tab-border-radius: 8px !important;
+    --toolbarbutton-border-radius: 16px !important;
+    --arrowpanel-border-radius : 16px !important;
+    --toolbar-bgcolor : white !important;
+    --newtab-background-color : rgba( 255 ,255, 255,0 ) !important;   
+    --button-hover-bgcolor: light-dark( rgba(207, 207, 216, .2), rgba(207, 207, 216, .1) )!important;    
+    --toolbox-non-lwt-textcolor: light-dark(rgba(32, 32, 32, 0.5), rgba(223, 223, 223, 0.5)) !important;
+    --toolbar-field-focus-border-color: rgba(0, 0, 0, 0) !important; /* remove the border when focus on urlbar */ 
+    --secondfox-panel-box-shadow: 0 0 4px rgba(0, 32, 64, 0.15);
+    --secondfox-sharp-box-shadow: 0 0 8px rgba(0, 32, 64, 0.15);
+    --secondfox-gradient: linear-gradient(196deg, #e8e7f2, #e5e9f5, #e2ebf7, #deedf8, #dbeff8, #daf0f7, #daf2f5, #daf3f3, #dcf4f1, #dff5ef, #e2f5ee, #e5f6ec);
+    --toolbarbutton-disabled-opacity: 0 !important;
+}
